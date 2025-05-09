@@ -36,7 +36,7 @@ Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut
 
    ```bash
    git clone https://github.com/username/repository-name.git
-   cd book-search-app
+   cd kelompok5
    ```
 
 2. **Instalasi Dependensi**
