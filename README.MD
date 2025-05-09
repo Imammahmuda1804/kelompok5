@@ -68,11 +68,11 @@ Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut
 1. **Menambahkan buku baru**
     ```bash
     curl -X POST http://localhost:3000/api/books -H "Content-Type: application/json" -d '{
-  "title": "JavaScript: The Definitive Guide",
-  "author": "David Flanagan",
-  "description": "A complete reference for JavaScript.",
-  "year": 2021,
-  "content": "Chapter 1: JavaScript Basics..."
+        "title": "JavaScript: The Definitive Guide",
+        "author": "David Flanagan",
+        "description": "A complete reference for JavaScript.",
+        "year": 2021,
+        "content": "Chapter 1: JavaScript Basics..."
   }'
 
    ```
