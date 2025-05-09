@@ -49,8 +49,11 @@ Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut
     ```bash
     npm install
    ```
+
 3. **Konfigurasi MySQL**
+
     Buat database di MySQL dengan nama books_db.
+
     ```bash
     CREATE TABLE books (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,13 +65,16 @@ Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut
     );
 
    ```
+
 4. **Jalankan Elasticsearch**
+
     Pastikan Anda sudah menjalankan Elasticsearch di http://localhost:9200.
 
 5. **Instalasi Dependensi**
     ```bash
     npm start
    ```
+
 ### Testing API
 
 1. **Menambahkan buku baru**
@@ -82,10 +88,12 @@ Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut
      }'
 
    ```
+
 2. **Mencari buku**
     ```bash
     curl "http://localhost:3000/api/books/search?q=JavaScript"
    ```
+
 3. **Memperbarui buku**
     ```bash
     curl -X PUT http://localhost:3000/api/books/1 -H "Content-Type: application/json" -d '{
@@ -96,6 +104,7 @@ Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut
      "content": "Chapter 1: Advanced JavaScript..."
      }'
    ```
+
 4. **Menghapus buku**
     ```bash
     curl -X DELETE http://localhost:3000/api/books/1
