@@ -2,7 +2,7 @@
 
 Ini adalah aplikasi web untuk pencarian dan pengelolaan buku. Aplikasi ini memungkinkan pengguna untuk mencari buku berdasarkan judul atau penulis, menambah, memperbarui, dan menghapus buku dari database. Data buku disimpan di MySQL dan didukung oleh Elasticsearch untuk pencarian yang lebih cepat.
 
-##Anggota kelompok
+## Anggota kelompok
 - Imam mahmuda - 2211083028
 - Winaldo Ageng Kalimasada - 2111082047
 - Nurhadi Sa'bani - 2211081021
