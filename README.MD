@@ -35,7 +35,7 @@ Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut
    Pertama, clone repository ini ke lokal Anda:
 
    ```bash
-   git clone https://github.com/username/repository-name.git
+   git clone https://github.com/Imammahmuda1804/kelompok5.git
    cd kelompok5
    ```
 
