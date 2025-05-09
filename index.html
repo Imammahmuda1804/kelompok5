@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Baca Buku Kelompok 5</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sidebar-decoration"></div>
+
+  <header>Web Baca Buku Kelompok 5</header>
+  
+  <div class="container">
+    <div class="search-container">
+      <button class="add-btn" onclick="window.location.href='insert.html'">➕ Tambahkan Buku</button>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Cari berdasarkan judul atau penulis..." />
+        <button onclick="searchBooks()">🔍 Cari</button>
+      </div>
+    </div>
+        
+    <div id="results"></div>
+  </div>
+
+  <footer class="footer">
+    &copy; 2025 Web Baca Buku Kelompok 5. Dibuat untuk pembelajaran Elasticsearch.
+  </footer>
+
+  <script>
+    async function searchBooks() {
+      const query = document.getElementById('searchInput').value.trim();
+      if (!query) return;
+
+      const response = await fetch(`http://localhost:3000/api/books/search?q=${encodeURIComponent(query)}`);
+      const books = await response.json();
+
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+
+      if (books.length === 0) {
+        resultsDiv.innerHTML = '<p>Tidak ada buku ditemukan.</p>';
+        return;
+      }
+
+      books.forEach(book => {
+        const div = document.createElement('div');
+        div.className = 'book';
+        div.innerHTML = `<strong>${book.title}</strong><br><em>Penulis: ${book.author}</em>`;
+        div.onclick = () => showDetail(book.id, div);
+        resultsDiv.appendChild(div);
+      });
+    }
+
+    async function showDetail(id, element) {
+  const response = await fetch(`http://localhost:3000/api/books/${id}`);
+  const book = await response.json();
+
+  const detailDiv = document.createElement('div');
+  detailDiv.className = 'detail';
+
+  const contentId = `content-${id}`;
+  detailDiv.innerHTML = `
+    <p><strong>Judul:</strong> ${book.title}</p>
+    <p><strong>Penulis:</strong> ${book.author}</p>
+    <p><strong>Tahun:</strong> ${book.year}</p>
+    <p><strong>Deskripsi:</strong> ${book.description}</p>
+    <button class="toggle-btn" onclick="toggleContent('${contentId}', this)">📖 Lihat Isi Buku</button>
+    <div id="${contentId}" class="book-content" style="display:none;">
+      <div>${book.content.replace(/\n/g, "<br>")}</div>
+    </div>
+  `;
+
+  element.appendChild(detailDiv);
+  element.onclick = null;
+}
+
+function toggleContent(contentId, button) {
+  const contentDiv = document.getElementById(contentId);
+  const isVisible = contentDiv.style.display === 'block';
+  contentDiv.style.display = isVisible ? 'none' : 'block';
+  button.textContent = isVisible ? '📖 Lihat Isi Buku' : '❌ Sembunyikan Isi Buku';
+}
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tambah & Cari Buku</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sidebar-decoration"></div>
+
+  <header>Web Baca Buku Kelompok 5</header>
+
+  <div class="container">
+    <h2>Tambah Buku Baru</h2>
+<form onsubmit="return addBook()" style="width: 100%; max-width: 600px;">
+  <div class="form-group">
+    <label class="form-label" for="new-title">Judul</label>
+    <input class="form-input" type="text" id="new-title" placeholder="Judul" required>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="new-author">Penulis</label>
+    <input class="form-input" type="text" id="new-author" placeholder="Penulis" required>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="new-year">Tahun</label>
+    <input class="form-input" type="number" id="new-year" placeholder="Tahun" required>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="new-description">Deskripsi</label>
+    <textarea class="form-textarea" id="new-description" placeholder="Deskripsi" rows="2"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="new-content">Isi Buku</label>
+    <textarea class="form-textarea" id="new-content" placeholder="Isi Buku" rows="4"></textarea>
+  </div>
+
+  <button class="add-btn" type="submit">📚 Tambah Buku</button>
+</form>
+
+
+    <h2 style="margin-top: 3rem;">Cari Buku</h2>
+    <div class="search-section">
+      <input type="text" id="searchInput" placeholder="Cari berdasarkan judul atau penulis..." />
+      <button onclick="searchBooks()">Cari</button>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+  <footer class="footer">© Kelompok 5 - Web Baca Buku</footer>
+
+  <script>
+    async function searchBooks() {
+      const query = document.getElementById('searchInput').value;
+      const response = await fetch(`http://localhost:3000/api/books/search?q=${encodeURIComponent(query)}`);
+      const books = await response.json();
+
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+
+      if (books.length === 0) {
+        resultsDiv.innerHTML = '<p>Tidak ada buku ditemukan.</p>';
+        return;
+      }
+
+      books.forEach(book => {
+        const div = document.createElement('div');
+        div.className = 'book';
+        div.innerHTML = `<strong>${book.title}</strong><br>Penulis: ${book.author}`;
+        div.onclick = () => showDetail(book.id, div);
+        resultsDiv.appendChild(div);
+      });
+    }
+
+    async function showDetail(id, element) {
+      const response = await fetch(`http://localhost:3000/api/books/${id}`);
+      const book = await response.json();
+
+      const detailDiv = document.createElement('div');
+      detailDiv.className = 'detail';
+      detailDiv.innerHTML = `
+  <div class="form-group">
+    <label class="form-label" for="edit-title-${id}">Judul</label>
+    <input class="form-input" value="${book.title}" id="edit-title-${id}" />
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="edit-author-${id}">Penulis</label>
+    <input class="form-input" value="${book.author}" id="edit-author-${id}" />
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="edit-year-${id}">Tahun</label>
+    <input class="form-input" type = "number" value="${book.year}" id="edit-year-${id}" />
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="edit-desc-${id}">Deskripsi</label>
+    <textarea class="form-textarea" id="edit-desc-${id}" rows="2">${book.description}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="edit-content-${id}">Isi Buku</label>
+    <textarea class="form-textarea" id="edit-content-${id}" rows="5">${book.content}</textarea>
+  </div>
+
+  <div class="actions">
+    <button class="add-btn" onclick="updateBook(${id})">💾 Simpan</button>
+    <button class="delete-btn" onclick="deleteBook(${id})">🗑️ Hapus</button>
+  </div>
+`;
+
+
+      element.appendChild(detailDiv);
+      element.onclick = null;
+    }
+
+    async function updateBook(id) {
+      const updated = {
+        title: document.getElementById(`edit-title-${id}`).value,
+        author: document.getElementById(`edit-author-${id}`).value,
+        year: document.getElementById(`edit-year-${id}`).value,
+        description: document.getElementById(`edit-desc-${id}`).value,
+        content: document.getElementById(`edit-content-${id}`).value,
+      };
+
+      const res = await fetch(`http://localhost:3000/api/books/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      });
+
+      if (res.ok) {
+        alert('Buku berhasil diperbarui');
+        searchBooks();
+      } else {
+        alert('Gagal memperbarui buku');
+      }
+    }
+
+    async function deleteBook(id) {
+      if (!confirm('Yakin ingin menghapus buku ini?')) return;
+
+      const res = await fetch(`http://localhost:3000/api/books/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (res.ok) {
+        alert('Buku berhasil dihapus');
+        searchBooks();
+      } else {
+        alert('Gagal menghapus buku');
+      }
+    }
+
+    async function addBook() {
+      const book = {
+        title: document.getElementById('new-title').value,
+        author: document.getElementById('new-author').value,
+        year: document.getElementById('new-year').value,
+        description: document.getElementById('new-description').value,
+        content: document.getElementById('new-content').value,
+      };
+
+      const res = await fetch('http://localhost:3000/api/books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(book)
+      });
+
+      if (res.ok) {
+        alert('Buku berhasil ditambahkan');
+        document.querySelector('form').reset();
+        searchBooks();
+      } else {
+        alert('Gagal menambahkan buku');
+      }
+
+      return false; // prevent reload
+    }
+  </script>
+</body>
+</html>
