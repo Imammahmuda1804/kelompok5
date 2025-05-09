@@ -73,7 +73,7 @@ Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut
         "description": "A complete reference for JavaScript.",
         "year": 2021,
         "content": "Chapter 1: JavaScript Basics..."
-  }'
+     }'
 
    ```
 2. **Mencari buku**
@@ -83,12 +83,12 @@ Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut
 3. **Memperbarui buku**
     ```bash
     curl -X PUT http://localhost:3000/api/books/1 -H "Content-Type: application/json" -d '{
-  "title": "JavaScript: The Definitive Guide (Updated)",
-  "author": "David Flanagan",
-  "description": "An updated reference for JavaScript.",
-  "year": 2022,
-  "content": "Chapter 1: Advanced JavaScript..."
-  }'
+     "title": "JavaScript: The Definitive Guide (Updated)",
+     "author": "David Flanagan",
+     "description": "An updated reference for JavaScript.",
+     "year": 2022,
+     "content": "Chapter 1: Advanced JavaScript..."
+     }'
    ```
 4. **Menghapus buku**
     ```bash
